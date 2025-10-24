@@ -8,7 +8,7 @@ configDotenv()
 
 // Inicializar Express
 const app = express()
-const port = process.env.EXPRESS_PORT || 5000
+const port = process.env.EXPRESS_PORT || 5010
 
 // Middlewares para proceso de peticiones
 app.use(json())                                     // Permite recibir JSON
