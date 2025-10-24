@@ -52,9 +52,10 @@ ${JSON.stringify(request.body, null, 2)}
         // Informar a la consola que se registró
         console.log(`Evento registrado exitosamente en ${logFile}`);
 
-        // Responder al cliente que todo salió bien
-        response.status(200).send({ status: 'success', message: 'Event received and logged.' });
-
+        // Imprimir el evento en la consola
+        console.log('==================================================')
+        console.log('Evento Recibido:')
+        console.log(logEntry)
     } catch (err) {
         // Manejar cualquier error durante la escritura del archivo
         console.error('Error al escribir en el archivo log:', err);
