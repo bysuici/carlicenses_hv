@@ -54,8 +54,8 @@ ${JSON.stringify(request.body, null, 2)}
 
         // Imprimir el evento en la consola
         console.log('==================================================')
-        console.log('Evento Recibido:')
-        console.log(logEntry)
+        console.log('Evento Recibido:', logEntry)
+        console.log('events: ', logEntry.params.events);
     } catch (err) {
         // Manejar cualquier error durante la escritura del archivo
         console.error('Error al escribir en el archivo log:', err);
