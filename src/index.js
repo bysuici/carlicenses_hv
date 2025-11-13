@@ -19,15 +19,31 @@ app.use(cors({
 app.use('/api', index_routes)
 
 app.post('/eventRcv', (request, response) => {
-    console.log('==================================================')
-    console.log(`[${new Date().toISOString()}] Evento Recibido:`)
-    console.log('==================================================')
-    console.log('HEADERS:\n', JSON.stringify(request.headers, null, 2))
-    console.log('\nBODY:\n', JSON.stringify(request.body, null, 2))
-    console.log('\EVENTS:\n', JSON.stringify(request.body.params.events, null, 2))
-    console.log('==================================================\n\n')
+    try {
+        console.log('==================================================')
+        console.log(`[${new Date().toISOString()}] Evento Recibido:`)
+        console.log('==================================================')
 
-    response.status(200).send({ status: 'ok', message: 'Event received and logged to console.' });
+        console.log('HEADERS:')
+        console.dir(request.headers, { depth: null, colors: true })
+
+        console.log('\nBODY:')
+        console.dir(request.body, { depth: null, colors: true })
+
+        const events = request.body?.params?.events
+
+        if (events) {
+            console.log('\nEVENTS:')
+            console.dir(events, { depth: null, colors: true })
+        } else {
+            console.log('\nEVENTS: No events in params')
+        }
+
+        console.log('==================================================\n\n')
+    } catch (error) {
+        console.error('Error procesando el log:', error.message)
+    }
+    response.status(200).send({ status: 'ok', message: 'Event received' });
 })
 
 app.get('/test', (request, response) => {
