@@ -1,6 +1,7 @@
 import { configDotenv } from 'dotenv'
 import express, { json, urlencoded } from 'express'
 import cors from 'cors'
+// Se eliminó la importación de 'fs/promises' ya que no se usará
 import { index_routes } from './routes/index.js'
 
 // Inicialización de las variables de entorno .env
@@ -24,43 +25,32 @@ app.use(cors({
 // Rutas principales de la API
 app.use('/api', index_routes)
 
-// Endpoint modificado para registrar el evento en un archivo
-app.post('/eventRcv', async (request, response) => {
-    // Definir el nombre del archivo log
-    const logFile = 'events.log';
+// Endpoint modificado para registrar el evento SOLO en la consola
+// Se quitó 'async' ya que no se usan promesas (await)
+app.post('/eventRcv', (request, response) => {
+    
+    // Imprimir el evento en la consola
+    console.log('==================================================')
+    console.log(`[${new Date().toISOString()}] Evento Recibido:`)
+    console.log('==================================================')
 
-    // Formatear el contenido del log (timestamp, headers y body)
-    // Usamos JSON.stringify(..., null, 2) para que el JSON se vea "bonito" y sea legible.
-    const logEntry = `
-==================================================
-[${new Date().toISOString()}] Evento Recibido:
-==================================================
-
-HEADERS:
-${JSON.stringify(request.headers, null, 2)}
-
-BODY:
-${JSON.stringify(request.body, null, 2)}
-
-\n\n`; // Espacio extra para el siguiente log
-
-    try {
-        // Escribir (añadir) al archivo log de forma asíncrona
-        // 'appendFile' crea el archivo si no existe y añade el contenido al final.
-        await appendFile(logFile, logEntry);
-
-        // Informar a la consola que se registró
-        console.log(`Evento registrado exitosamente en ${logFile}`);
-
-        // Imprimir el evento en la consola
-        console.log('==================================================')
-        console.log('Evento Recibido:', logEntry)
-        console.log('events: ', logEntry.params.events);
-    } catch (err) {
-        // Manejar cualquier error durante la escritura del archivo
-        console.error('Error al escribir en el archivo log:', err);
-        response.status(500).send({ status: 'error', message: 'Internal server error while logging event.' });
+    // Imprimir Headers y Body de forma legible
+    console.log('HEADERS:\n', JSON.stringify(request.headers, null, 2))
+    console.log('\nBODY:\n', JSON.stringify(request.body, null, 2))
+    
+    // Lógica para imprimir los 'events' si existen
+    if (request.body && request.body.events) {
+        console.log('\nEvents detectados: ', request.body.events);
+    } else {
+        console.log('\nEl body no contiene la propiedad "events".');
     }
+    console.log('==================================================\n\n')
+
+
+    // Enviar respuesta exitosa
+    // Se envía la respuesta fuera de cualquier try...catch (que ya no existe)
+    response.status(200).send({ status: 'ok', message: 'Event received and logged to console.' });
+
 })
 
 app.get('/test', (request, response) => {
