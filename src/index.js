@@ -1,6 +1,7 @@
 import { configDotenv } from 'dotenv'
 import express, { json, urlencoded } from 'express'
 import cors from 'cors'
+import axios from 'axios'
 import { index_routes } from './routes/index.js'
 
 configDotenv()
@@ -18,20 +19,9 @@ app.use(cors({
 
 app.use('/api', index_routes)
 
-app.post('/eventRcv', (request, response) => {
+app.post('/eventRcv', async (request, response) => {
     try {
-        console.log('==================================================')
-        console.log(`[${new Date().toISOString()}] Evento Recibido:`)
-        console.log('==================================================')
-
-        console.log('HEADERS:')
-        console.dir(request.headers, { depth: null, colors: true })
-
-        console.log('\nBODY:')
-        console.dir(request.body, { depth: null, colors: true })
-
         const events = request.body?.params?.events
-
         if (events) {
             console.log('\nEVENTS:')
             console.dir(events, { depth: null, colors: true })
@@ -39,11 +29,28 @@ app.post('/eventRcv', (request, response) => {
             console.log('\nEVENTS: No events in params')
         }
 
-        console.log('==================================================\n\n')
+        try {
+            const backendCoviaResponse = await axios.post(`https://api-covia.okip.com.mx/plate-event`, request.body, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            const backendBitacoraResponse = await axios.post(`https://api-bitacora.okip.com.mx/api/event/plates`, request.body, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            console.log('Evento enviado al backend principal:', backendCoviaResponse.data)
+            console.log('Evento enviado al backend principal:', backendBitacoraResponse.data)
+        } catch (axiosError) {
+            console.error('Error enviando evento al backend principal:', axiosError.message)
+        }
+
+        response.status(200).send({ status: 'ok', message: 'Event received' })
     } catch (error) {
         console.error('Error procesando el log:', error.message)
+        response.status(500).send({ status: 'error', message: 'Internal error' })
     }
-    response.status(200).send({ status: 'ok', message: 'Event received' });
 })
 
 app.get('/test', (request, response) => {
