@@ -23,10 +23,10 @@ app.post('/eventRcv', async (request, response) => {
     try {
         const events = request.body?.params?.events
         if (events) {
-            console.log('\nEVENTS:')
-            console.dir(events, { depth: null, colors: true })
+            // console.log('\nEVENTS:')
+            // console.dir(events, { depth: null, colors: true })
         } else {
-            console.log('\nEVENTS: No events in params')
+            // console.log('\nEVENTS: No events in params')
         }
 
         try {
@@ -40,8 +40,8 @@ app.post('/eventRcv', async (request, response) => {
                     'Content-Type': 'application/json'
                 }
             })
-            console.log('Evento enviado al backend principal:', backendCoviaResponse.data)
-            console.log('Evento enviado al backend principal:', backendBitacoraResponse.data)
+            // console.log('Evento enviado al backend principal:', backendCoviaResponse.data)
+            // console.log('Evento enviado al backend principal:', backendBitacoraResponse.data)
         } catch (axiosError) {
             console.error('Error enviando evento al backend principal:', axiosError.message)
         }
@@ -51,6 +51,35 @@ app.post('/eventRcv', async (request, response) => {
         console.error('Error procesando el log:', error.message)
         response.status(500).send({ status: 'error', message: 'Internal error' })
     }
+})
+
+// Event HikCentral 196888
+app.post('/event/196888', (request, response) => {
+    try {
+        console.log('==================================================')
+        console.log(`[${new Date().toISOString()}] Evento Recibido de Person:`)
+        console.log('==================================================')
+
+        console.log('HEADERS:')
+        console.dir(request.headers, { depth: null, colors: true })
+
+        console.log('\nBODY:')
+        console.dir(request.body, { depth: null, colors: true })
+
+        const events = request.body?.params?.events
+
+        if (events) {
+            console.log('\nEVENTS:')
+            console.dir(events, { depth: null, colors: true })
+        } else {
+            console.log('\nEVENTS: No events in params')
+        }
+
+        console.log('==================================================\n\n')
+    } catch (error) {
+        console.error('Error procesando el log:', error.message)
+    }
+    response.status(200).send({ status: 'ok', message: 'Event received' });
 })
 
 app.get('/test', (request, response) => {
