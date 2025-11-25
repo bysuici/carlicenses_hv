@@ -54,6 +54,7 @@ app.post('/eventRcv', async (request, response) => {
 })
 
 // Event HikCentral 196888
+// http://62.72.1.142/event/196888
 app.post('/event/196888', (request, response) => {
     try {
         console.log('==================================================')
