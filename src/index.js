@@ -53,9 +53,9 @@ app.post('/eventRcv', async (request, response) => {
     }
 })
 
-// Event HikCentral 196888
-// http://62.72.1.142/event/196888
-app.post('/event/196888', (request, response) => {
+// Nuevos Eventos Desde HikCentral
+// http://62.72.1.142:5010/new/events
+app.post('/new/events', (request, response) => {
     try {
         console.log('==================================================')
         console.log(`[${new Date().toISOString()}] Evento Recibido de Person:`)
