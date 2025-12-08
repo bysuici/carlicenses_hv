@@ -1,5 +1,5 @@
 import { configDotenv } from 'dotenv'
-import express, { json, urlencoded } from 'express'
+import express, { json, response, urlencoded } from 'express'
 import cors from 'cors'
 import axios from 'axios'
 import { index_routes } from './routes/index.js'
@@ -83,8 +83,45 @@ app.post('/new/events', (request, response) => {
     response.status(200).send({ status: 'ok', message: 'Event received' });
 })
 
-app.get('/test', (request, response) => {
-    response.status(200).json({ message: 'Test endpoint is working!' })
+// Evento de Torniquetes HikCentral
+app.post('/event/200518', async (request, response) => {
+    const events = request.body?.params?.events
+    try {
+        // const backendCoviaResponse = await axios.post(`https://api-covia.okip.com.mx/plate-event`, request.body, {
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     }
+        // })
+
+        await axios.post(`https://api-bitacora.okip.com.mx/api/event/torniquete/200518`, events, { headers: { 'Content-Type': 'application/json' } })
+
+        response.status(200).send({ status: 'ok', message: 'Event received' })
+    } catch (axiosError) {
+        console.error('Error enviando evento al backend principal:', axiosError.message)
+    }
+})
+
+// Evento de Puertas HikCentral
+app.post('/event/197127', async (request, response) => {
+    try {
+        const events = request.body?.params?.events
+        try {
+            // const backendCoviaResponse = await axios.post(`https://api-covia.okip.com.mx/plate-event`, request.body, {
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     }
+            // })
+
+            await axios.post(`https://api-bitacora.okip.com.mx/api/event/doors/197127`, events, { headers: { 'Content-Type': 'application/json' } })
+        } catch (axiosError) {
+            console.error('Error enviando evento al backend principal:', axiosError.message)
+        }
+
+        response.status(200).send({ status: 'ok', message: 'Event received' })
+    } catch (error) {
+        console.error('Error procesando el log:', error.message)
+        response.status(500).send({ status: 'error', message: 'Internal error' })
+    }
 })
 
 app.listen(port, () => {
