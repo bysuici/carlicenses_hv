@@ -85,7 +85,7 @@ app.post('/new/events', (request, response) => {
 
 // Evento de Torniquetes HikCentral
 app.post('/event/200518', async (request, response) => {
-    const events = request.body?.params?.events
+    const events = request.body?.params?.events[0]
     try {
         // const backendCoviaResponse = await axios.post(`https://api-covia.okip.com.mx/plate-event`, request.body, {
         //     headers: {
@@ -104,7 +104,7 @@ app.post('/event/200518', async (request, response) => {
 // Evento de Puertas HikCentral
 app.post('/event/197127', async (request, response) => {
     try {
-        const events = request.body?.params?.events
+        const events = request.body?.params?.events[0]
         try {
             // const backendCoviaResponse = await axios.post(`https://api-covia.okip.com.mx/plate-event`, request.body, {
             //     headers: {
