@@ -53,8 +53,7 @@ app.post('/eventRcv', async (request, response) => {
     }
 })
 
-// Nuevos Eventos Desde HikCentral
-// http://62.72.1.142:5010/new/events
+// NUEVOS EVENTOS
 app.post('/new/events', (request, response) => {
     try {
         console.log('==================================================')
@@ -83,7 +82,7 @@ app.post('/new/events', (request, response) => {
     response.status(200).send({ status: 'ok', message: 'Event received' });
 })
 
-// Evento de Torniquetes HikCentral
+// TORNIQUETE
 app.post('/event/200518', async (request, response) => {
     const events = request.body?.params?.events[0]
     try {
@@ -101,7 +100,7 @@ app.post('/event/200518', async (request, response) => {
     }
 })
 
-// Evento de TORNIQUETES FACIAL HikCentral
+// BIOMETRICO
 app.post('/event/196893', async (request, response) => {
     try {
         const events = request.body?.params?.events[0]
@@ -124,7 +123,7 @@ app.post('/event/196893', async (request, response) => {
     }
 })
 
-// Evento de Puertas HikCentral
+// PUERTAS POR HUELLA
 app.post('/event/197127', async (request, response) => {
     try {
         const events = request.body?.params?.events[0]
@@ -136,6 +135,29 @@ app.post('/event/197127', async (request, response) => {
             // })
 
             await axios.post(`https://api-bitacora.okip.com.mx/api/event/doors/197127`, events, { headers: { 'Content-Type': 'application/json' } })
+        } catch (axiosError) {
+            console.error('Error enviando evento al backend principal:', axiosError.message)
+        }
+
+        response.status(200).send({ status: 'ok', message: 'Event received' })
+    } catch (error) {
+        console.error('Error procesando el log:', error.message)
+        response.status(500).send({ status: 'error', message: 'Internal error' })
+    }
+})
+
+// ABRIR PUERTAS CON TARJETA
+app.post('/event/198914', async (request, response) => {
+    try {
+        const events = request.body?.params?.events[0]
+        try {
+            // const backendCoviaResponse = await axios.post(`https://api-covia.okip.com.mx/plate-event`, request.body, {
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     }
+            // })
+
+            await axios.post(`https://api-bitacora.okip.com.mx/api/event/doors/198914`, events, { headers: { 'Content-Type': 'application/json' } })
         } catch (axiosError) {
             console.error('Error enviando evento al backend principal:', axiosError.message)
         }
