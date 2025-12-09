@@ -101,6 +101,29 @@ app.post('/event/200518', async (request, response) => {
     }
 })
 
+// Evento de TORNIQUETES FACIAL HikCentral
+app.post('/event/196893', async (request, response) => {
+    try {
+        const events = request.body?.params?.events[0]
+        try {
+            // const backendCoviaResponse = await axios.post(`https://api-covia.okip.com.mx/plate-event`, request.body, {
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     }
+            // })
+
+            await axios.post(`https://api-bitacora.okip.com.mx/api/event/torniquete/196893`, events, { headers: { 'Content-Type': 'application/json' } })
+        } catch (axiosError) {
+            console.error('Error enviando evento al backend principal:', axiosError.message)
+        }
+
+        response.status(200).send({ status: 'ok', message: 'Event received' })
+    } catch (error) {
+        console.error('Error procesando el log:', error.message)
+        response.status(500).send({ status: 'error', message: 'Internal error' })
+    }
+})
+
 // Evento de Puertas HikCentral
 app.post('/event/197127', async (request, response) => {
     try {
