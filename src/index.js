@@ -120,9 +120,9 @@ app.post('/event/196893', async (request, response) => {
 
     // Fan ID Endpoint Biometrico
     try {
-        await axios.post('https://fanid-okip.okip.com.mx/api/v1/hikvision/events/access/listener', { body: events })
+        await axios.post('https://fanid-okip.okip.com.mx/api/v1/hikvision/events/access/listener', events)
     } catch (error) {
-        console.error('Error enviando evento al backend FanID:', error.message)
+        console.error('Error enviando evento BIOMETRICO al backend FanID:', error.message)
     }
 
     response.status(200).send({ status: 'ok', message: 'Event received' })
@@ -141,9 +141,9 @@ app.post('/event/197127', async (request, response) => {
 
     // Fan ID Endpoint Biometrico
     try {
-        await axios.post('https://fanid-okip.okip.com.mx/api/v1/hikvision/events/doors/listener', { body: events })
+        await axios.post('https://fanid-okip.okip.com.mx/api/v1/hikvision/events/doors/listener', events)
     } catch (error) {
-        console.error('Error enviando evento al backend FanID:', error.message)
+        console.error('Error enviando evento PUERTAS POR HUELLA al backend FanID:', error.message)
     }
 
     response.status(200).send({ status: 'ok', message: 'Event received' })
@@ -162,9 +162,9 @@ app.post('/event/198914', async (request, response) => {
 
     // Fan ID Endpoint Puertas por Tarjeta
     try {
-        await axios.post('https://fanid-okip.okip.com.mx/api/v1/hikvision/events/cards/listener', { body: events })
+        await axios.post('https://fanid-okip.okip.com.mx/api/v1/hikvision/events/cards/listener', events)
     } catch (error) {
-        console.error('Error enviando evento al backend FanID:', error.message)
+        console.error('Error enviando evento ABRIR PUERTAS CON TARJETA al backend FanID:', error.message)
     }
 
     response.status(200).send({ status: 'ok', message: 'Event received' })
