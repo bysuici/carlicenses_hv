@@ -23,10 +23,10 @@ app.post('/eventRcv', async (request, response) => {
     try {
         const events = request.body?.params?.events
         if (events) {
-            // console.log('\nEVENTS:')
-            // console.dir(events, { depth: null, colors: true })
+            console.log('\nBODY:')
+            console.dir(request.body, { depth: null, colors: true })
         } else {
-            // console.log('\nEVENTS: No events in params')
+            console.log('\nEVENTS: No events in params')
         }
 
         try {
