@@ -46,8 +46,6 @@ app.post('/eventRcv', async (request, response) => {
 
             // Fan ID Endpoint Placas
             const backendFanIDResponse = await axios.post(`https://fanid-okip.okip.com.mx/api/v1/hikvision/events/plates/listener`, { body: request.body })
-            // console.log('Evento enviado al backend principal:', backendCoviaResponse.data)
-            // console.log('Evento enviado al backend principal:', backendBitacoraResponse.data)
         } catch (axiosError) {
             console.error('Error enviando evento al backend principal:', axiosError.message)
         }
@@ -92,40 +90,29 @@ app.post('/new/events', (request, response) => {
 app.post('/event/200518', async (request, response) => {
     const events = request.body?.params?.events[0]
 
-    console.log('==================================================')
-    console.log(`[${new Date().toISOString()}] Evento Recibido de Person - Torniquete:`)
-    console.log('==================================================')
-
-    console.log('\nBODY:')
-    console.dir(request.body, { depth: null, colors: true })
-    console.log('==================================================\n\n')
-
+    // Bitacora Endpoint Torniquetes
     try {
         await axios.post(`https://api-bitacora.okip.com.mx/api/event/torniquete/200518`, events, { headers: { 'Content-Type': 'application/json' } })
-        response.status(200).send({ status: 'ok', message: 'Event received' })
     } catch (axiosError) {
         console.error('Error enviando evento al backend principal:', axiosError.message)
     }
 
     // Fan ID Endpoint Torniquetes
     try {
-        await axios.post('https://fanid-okip.okip.com.mx/api/v1/hikvision/events/torniquete/listener', events, { headers: { 'Content-Type': 'application/json' } })
-        response.status(200).send({ status: 'ok', message: 'Event received' })
+        await axios.post('https://fanid-okip.okip.com.mx/api/v1/hikvision/events/torniquete/listener', { data: events })
     } catch (error) {
         console.error('Error enviando evento al backend FanID:', error.message)
     }
+
+    response.status(200).send({ status: 'ok', message: 'Event received' })
 })
 
 // BIOMETRICO
 app.post('/event/196893', async (request, response) => {
     const events = request.body?.params?.events[0]
-    try {
-        // const backendCoviaResponse = await axios.post(`https://api-covia.okip.com.mx/plate-event`, request.body, {
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     }
-        // })
 
+    // Bitacora Endpoint Biometrico
+    try {
         await axios.post(`https://api-bitacora.okip.com.mx/api/event/torniquete/196893`, events, { headers: { 'Content-Type': 'application/json' } })
     } catch (axiosError) {
         console.error('Error enviando evento al backend principal:', axiosError.message)
@@ -133,23 +120,20 @@ app.post('/event/196893', async (request, response) => {
 
     // Fan ID Endpoint Biometrico
     try {
-        await axios.post('https://fanid-okip.okip.com.mx/api/v1/hikvision/events/access/listener', events, { headers: { 'Content-Type': 'application/json' } })
-        response.status(200).send({ status: 'ok', message: 'Event received' })
+        await axios.post('https://fanid-okip.okip.com.mx/api/v1/hikvision/events/access/listener', { body: events })
     } catch (error) {
         console.error('Error enviando evento al backend FanID:', error.message)
     }
+
+    response.status(200).send({ status: 'ok', message: 'Event received' })
 })
 
 // PUERTAS POR HUELLA
 app.post('/event/197127', async (request, response) => {
     const events = request.body?.params?.events[0]
-    try {
-        // const backendCoviaResponse = await axios.post(`https://api-covia.okip.com.mx/plate-event`, request.body, {
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     }
-        // })
 
+    // Bitacora Endpoint Biometrico poe Huella
+    try {
         await axios.post(`https://api-bitacora.okip.com.mx/api/event/doors/197127`, events, { headers: { 'Content-Type': 'application/json' } })
     } catch (axiosError) {
         console.error('Error enviando evento al backend principal:', axiosError.message)
@@ -157,24 +141,20 @@ app.post('/event/197127', async (request, response) => {
 
     // Fan ID Endpoint Biometrico
     try {
-        await axios.post('https://fanid-okip.okip.com.mx/api/v1/hikvision/events/doors/listener', events, { headers: { 'Content-Type': 'application/json' } })
-        response.status(200).send({ status: 'ok', message: 'Event received' })
+        await axios.post('https://fanid-okip.okip.com.mx/api/v1/hikvision/events/doors/listener', { body: events })
     } catch (error) {
         console.error('Error enviando evento al backend FanID:', error.message)
     }
 
+    response.status(200).send({ status: 'ok', message: 'Event received' })
 })
 
 // ABRIR PUERTAS CON TARJETA
 app.post('/event/198914', async (request, response) => {
     const events = request.body?.params?.events[0]
-    try {
-        // const backendCoviaResponse = await axios.post(`https://api-covia.okip.com.mx/plate-event`, request.body, {
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     }
-        // })
 
+    // Bitacora Endpoint Puertas por Tarjeta
+    try {
         await axios.post(`https://api-bitacora.okip.com.mx/api/event/doors/198914`, events, { headers: { 'Content-Type': 'application/json' } })
     } catch (axiosError) {
         console.error('Error enviando evento al backend principal:', axiosError.message)
@@ -182,11 +162,12 @@ app.post('/event/198914', async (request, response) => {
 
     // Fan ID Endpoint Puertas por Tarjeta
     try {
-        await axios.post('https://fanid-okip.okip.com.mx/api/v1/hikvision/events/cards/listener', events, { headers: { 'Content-Type': 'application/json' } })
-        response.status(200).send({ status: 'ok', message: 'Event received' })
+        await axios.post('https://fanid-okip.okip.com.mx/api/v1/hikvision/events/cards/listener', { body: events })
     } catch (error) {
         console.error('Error enviando evento al backend FanID:', error.message)
     }
+
+    response.status(200).send({ status: 'ok', message: 'Event received' })
 })
 
 app.listen(port, () => {
