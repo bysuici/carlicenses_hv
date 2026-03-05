@@ -45,11 +45,7 @@ app.post('/eventRcv', async (request, response) => {
             })
 
             // Fan ID Endpoint Placas
-            const backendFanIDResponse = await axios.post(`https://fanid-okip.okip.com.mx/api/v1/hikvision/events/plates/listener`, request.body, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
+            const backendFanIDResponse = await axios.post(`https://fanid-okip.okip.com.mx/api/v1/hikvision/events/plates/listener`, { body: request.body })
             // console.log('Evento enviado al backend principal:', backendCoviaResponse.data)
             // console.log('Evento enviado al backend principal:', backendBitacoraResponse.data)
         } catch (axiosError) {
