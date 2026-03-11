@@ -47,6 +47,7 @@ app.post('/eventRcv', async (request, response) => {
             // Fan ID Endpoint Placas
             const backendFanIDResponse = await axios.post(`https://fanid-okip.okip.com.mx/api/v1/hikvision/events/plates/listener`, { body: request.body })
         } catch (axiosError) {
+            console.log('evento:', request.body)
             console.error('Error enviando evento al backend principal:', axiosError.message)
         }
 
@@ -94,6 +95,7 @@ app.post('/event/200518', async (request, response) => {
     try {
         await axios.post(`https://api-bitacora.okip.com.mx/api/event/torniquete/200518`, events, { headers: { 'Content-Type': 'application/json' } })
     } catch (axiosError) {
+        console.log('evento:', request.body)
         console.error('Error enviando evento al backend principal:', axiosError.message)
     }
 
@@ -115,6 +117,7 @@ app.post('/event/196893', async (request, response) => {
     try {
         await axios.post(`https://api-bitacora.okip.com.mx/api/event/torniquete/196893`, events, { headers: { 'Content-Type': 'application/json' } })
     } catch (axiosError) {
+        console.log('evento:', request.body)
         console.error('Error enviando evento al backend principal:', axiosError.message)
     }
 
@@ -136,6 +139,7 @@ app.post('/event/197127', async (request, response) => {
     try {
         await axios.post(`https://api-bitacora.okip.com.mx/api/event/doors/197127`, events, { headers: { 'Content-Type': 'application/json' } })
     } catch (axiosError) {
+        console.log('evento:', request.body)
         console.error('Error enviando evento al backend principal:', axiosError.message)
     }
 
@@ -157,6 +161,7 @@ app.post('/event/198914', async (request, response) => {
     try {
         await axios.post(`https://api-bitacora.okip.com.mx/api/event/doors/198914`, events, { headers: { 'Content-Type': 'application/json' } })
     } catch (axiosError) {
+        console.log('evento:', request.body)
         console.error('Error enviando evento al backend principal:', axiosError.message)
     }
 
