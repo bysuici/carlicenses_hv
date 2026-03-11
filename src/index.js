@@ -175,7 +175,7 @@ app.post('/event/198914', async (request, response) => {
     response.status(200).send({ status: 'ok', message: 'Event received' })
 })
 
-app.post('/panic-buttom', (request, response) => {
+app.post('/camera-buttom', (request, response) => {
     try {
         console.log('==================================================')
         console.log(`[${new Date().toISOString()}] Botón de Pánico Activado:`)
