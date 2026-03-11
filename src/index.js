@@ -22,12 +22,12 @@ app.use('/api', index_routes)
 app.post('/eventRcv', async (request, response) => {
     try {
         const events = request.body?.params?.events
-        if (events) {
-            console.log('\nBODY:')
-            console.dir(request.body, { depth: null, colors: true })
-        } else {
-            console.log('\nEVENTS: No events in params')
-        }
+        // if (events) {
+        //     console.log('\nBODY:')
+        //     console.dir(request.body, { depth: null, colors: true })
+        // } else {
+        //     console.log('\nEVENTS: No events in params')
+        // }
 
         try {
             // COVIA Endpoint Placas
@@ -59,30 +59,30 @@ app.post('/eventRcv', async (request, response) => {
 
 // NUEVOS EVENTOS
 app.post('/new/events', (request, response) => {
-    // try {
-    //     console.log('==================================================')
-    //     console.log(`[${new Date().toISOString()}] Evento Recibido de Person:`)
-    //     console.log('==================================================')
+    try {
+        console.log('==================================================')
+        console.log(`[${new Date().toISOString()}] Evento Recibido de Person:`)
+        console.log('==================================================')
 
-    //     console.log('HEADERS:')
-    //     console.dir(request.headers, { depth: null, colors: true })
+        console.log('HEADERS:')
+        console.dir(request.headers, { depth: null, colors: true })
 
-    //     console.log('\nBODY:')
-    //     console.dir(request.body, { depth: null, colors: true })
+        console.log('\nBODY:')
+        console.dir(request.body, { depth: null, colors: true })
 
-    //     const events = request.body?.params?.events
+        const events = request.body?.params?.events
 
-    //     if (events) {
-    //         console.log('\nEVENTS:')
-    //         console.dir(events, { depth: null, colors: true })
-    //     } else {
-    //         console.log('\nEVENTS: No events in params')
-    //     }
+        if (events) {
+            console.log('\nEVENTS:')
+            console.dir(events, { depth: null, colors: true })
+        } else {
+            console.log('\nEVENTS: No events in params')
+        }
 
-    //     console.log('==================================================\n\n')
-    // } catch (error) {
-    //     console.error('Error procesando el log:', error.message)
-    // }
+        console.log('==================================================\n\n')
+    } catch (error) {
+        console.error('Error procesando el log:', error.message)
+    }
     response.status(200).send({ status: 'ok', message: 'Event received' });
 })
 
@@ -101,7 +101,7 @@ app.post('/event/200518', async (request, response) => {
     try {
         await axios.post('https://fanid-okip.okip.com.mx/api/v1/hikvision/events/torniquete/listener', { data: events })
     } catch (error) {
-        console.error('Error enviando evento al backend FanID:', error.message)
+        console.error('Error enviando evento TORNIQUETE al backend FanID:', error.message)
     }
 
     response.status(200).send({ status: 'ok', message: 'Event received' })
