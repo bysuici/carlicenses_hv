@@ -16,7 +16,7 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }))
-app.use(express.text({ type: 'text/plain' }));
+// app.use(express.text({ type: 'text/plain' }));
 
 app.use('/api', index_routes)
 
@@ -176,7 +176,6 @@ app.post('/event/198914', async (request, response) => {
     response.status(200).send({ status: 'ok', message: 'Event received' })
 })
 
-app.use('/camera-buttom', express.raw({ type: "multipart/form-data", limit: "1mb" }));
 app.post('/camera-buttom', (request, response) => {
     try {
         console.log('==================================================')
@@ -187,8 +186,7 @@ app.post('/camera-buttom', (request, response) => {
         console.dir(request.headers, { depth: null, colors: true })
 
         console.log('\nBODY:')
-        const bodyText = request.body.toString();
-        console.dir(bodyText, { depth: null, colors: true })
+        console.dir(request.body, { depth: null, colors: true })
 
         console.log('==================================================\n\n')
 
