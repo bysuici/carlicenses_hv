@@ -1,5 +1,5 @@
 import { configDotenv } from 'dotenv'
-import express, { json, response, urlencoded } from 'express'
+import express, { json, request, response, urlencoded } from 'express'
 import cors from 'cors'
 import axios from 'axios'
 import { index_routes } from './routes/index.js'
@@ -173,6 +173,26 @@ app.post('/event/198914', async (request, response) => {
     }
 
     response.status(200).send({ status: 'ok', message: 'Event received' })
+})
+
+app.post('/panic-buttom', (request, response) => {
+    try {
+        console.log('==================================================')
+        console.log(`[${new Date().toISOString()}] Botón de Pánico Activado:`)
+        console.log('==================================================')
+
+        console.log('HEADERS:')
+        console.dir(request.headers, { depth: null, colors: true })
+
+        console.log('\nBODY:')
+        console.dir(request.body, { depth: null, colors: true })
+
+        console.log('==================================================\n\n')
+
+        response.status(200).send({ status: 'ok', message: 'Panic button event received' })
+    } catch (error) {
+        console.error('Error procesando el log del botón de pánico:', error.message)
+    }
 })
 
 app.listen(port, () => {
