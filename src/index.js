@@ -176,19 +176,25 @@ app.post('/event/198914', async (request, response) => {
     response.status(200).send({ status: 'ok', message: 'Event received' })
 })
 
-app.post('/camera-buttom', (request, response) => {
+app.post('/camera-buttom', async (request, response) => {
     try {
         console.log('==================================================')
         console.log(`[${new Date().toISOString()}] Botón de Pánico Activado:`)
         console.log('==================================================')
 
-        console.log('HEADERS:')
-        console.dir(request.headers, { depth: null, colors: true })
-
         console.log('\nBODY:')
         console.dir(request.body, { depth: null, colors: true })
 
         console.log('==================================================\n\n')
+
+        // COVIA Endpoint Botón de Pánico
+        const backendCoviaResponse = await axios.post(`https://api-covia.okip.com.mx/panic-button`, request.body, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        console.log('Respuesta de COVIA:', backendCoviaResponse.data)
 
         response.status(200).send({ status: 'ok', message: 'Panic button event received' })
     } catch (error) {
