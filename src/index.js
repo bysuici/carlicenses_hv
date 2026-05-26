@@ -46,7 +46,7 @@ app.post('/eventRcv', async (request, response) => {
             })
 
             // Fan ID Endpoint Placas
-            const backendFanIDResponse = await axios.post(`https://fanid-okip.okip.com.mx/api/v1/hikvision/events/plates/listener`, request.body, {
+            const backendFanIDResponse = await axios.post(`https://ria-api.okip.com.mx/api/v1/hikvision/events/plates/listener`, request.body, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
