@@ -38,13 +38,6 @@ app.post('/eventRcv', async (request, response) => {
                 }
             })
 
-            // Bitacora Endpoint Placas
-            const backendBitacoraResponse = await axios.post(`https://api-bitacora.okip.com.mx/api/event/plates`, request.body, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-
             // Fan ID Endpoint Placas
             const backendFanIDResponse = await axios.post(`https://api-ria.okip.com.mx/api/v1/hikvision/events/plates/listener`, request.body, {
                 headers: {
