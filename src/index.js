@@ -44,9 +44,10 @@ app.post('/eventRcv', async (request, response) => {
                     'Content-Type': 'application/json'
                 }
             })
+            console.dir('backendFanIDResponse:', backendFanIDResponse.data, { depth: null, colors: true })
         } catch (axiosError) {
             console.dir(request.body, { depth: null, colors: true })
-            console.error('Error enviando evento al backend principal:', axiosError.message)
+            console.error('Error enviando evento al backend principal placas:', axiosError.message)
         }
 
         response.status(200).send({ status: 'ok', message: 'Event received' })
@@ -94,7 +95,7 @@ app.post('/event/200518', async (request, response) => {
         await axios.post(`https://api-bitacora.okip.com.mx/api/event/torniquete/200518`, events, { headers: { 'Content-Type': 'application/json' } })
     } catch (axiosError) {
         console.dir('evento 200518:', request.body, { depth: null, colors: true })
-        console.error('Error enviando evento al backend principal:', axiosError.message)
+        console.error('Error enviando evento al backend principal torniquete:', axiosError.message)
     }
 
     // Fan ID Endpoint Torniquetes
@@ -116,7 +117,7 @@ app.post('/event/196893', async (request, response) => {
         await axios.post(`https://api-bitacora.okip.com.mx/api/event/torniquete/196893`, events, { headers: { 'Content-Type': 'application/json' } })
     } catch (axiosError) {
         console.dir('evento 196893:', request.body, { depth: null, colors: true })
-        console.error('Error enviando evento al backend principal:', axiosError.message)
+        console.error('Error enviando evento al backend principal biometrico:', axiosError.message)
     }
 
     // Fan ID Endpoint Biometrico
@@ -138,7 +139,7 @@ app.post('/event/197127', async (request, response) => {
         await axios.post(`https://api-bitacora.okip.com.mx/api/event/doors/197127`, events, { headers: { 'Content-Type': 'application/json' } })
     } catch (axiosError) {
         console.dir('evento 197127:', request.body, { depth: null, colors: true })
-        console.error('Error enviando evento al backend principal:', axiosError.message)
+        console.error('Error enviando evento al backend principal biometrico poe huella:', axiosError.message)
     }
 
     // Fan ID Endpoint Biometrico
