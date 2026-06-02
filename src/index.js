@@ -20,41 +20,37 @@ app.use(cors({
 
 app.use('/api', index_routes)
 
+// EVENTO DE PRUEBA PARA EVENTOS DE PLACAS
 app.post('/eventRcv', async (request, response) => {
+    const events = request.body?.params?.events
+    console.log('\n[/eventRcv] BODY RECIVED:')
+    console.dir(request.body, { depth: null, colors: true })
+
     try {
-        const events = request.body?.params?.events
-        // if (events) {
-        //     console.log('\nBODY:')
-        //     console.dir(request.body, { depth: null, colors: true })
-        // } else {
-        //     console.log('\nEVENTS: No events in params')
-        // }
-
-        try {
-            // COVIA Endpoint Placas
-            const backendCoviaResponse = await axios.post(`https://api-covia.okip.com.mx/plate-event`, request.body, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-
-            // Fan ID Endpoint Placas
-            const backendFanIDResponse = await axios.post(`https://api-ria.okip.com.mx/api/v1/hikvision/events/plates/listener`, request.body, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            console.dir('backendFanIDResponse:', backendFanIDResponse.data, { depth: null, colors: true })
-        } catch (axiosError) {
-            console.dir(request.body, { depth: null, colors: true })
-            console.error('Error enviando evento al backend principal placas:', axiosError.message)
-        }
-
-        response.status(200).send({ status: 'ok', message: 'Event received' })
-    } catch (error) {
-        console.error('Error procesando el log:', error.message)
-        response.status(500).send({ status: 'error', message: 'Internal error' })
+        // COVIA Endpoint Placas
+        await axios.post(`https://api-covia.okip.com.mx/plate-event`, request.body, { headers: { 'Content-Type': 'application/json' } })
+    } catch (axiosError) {
+        console.dir(request.body, { depth: null, colors: true })
+        console.error('Error enviando evento al backend principal:', axiosError.message)
     }
+
+    try {
+        // Bitacora Endpoint Placas
+        await axios.post(`https://api-bitacora.okip.com.mx/api/event/plates`, request.body, { headers: { 'Content-Type': 'application/json' } })
+    } catch (axiosError) {
+        console.dir(request.body, { depth: null, colors: true })
+        console.error('Error enviando evento al backend principal:', axiosError.message)
+    }
+
+    try {
+        // Fan ID Endpoint Placas
+        await axios.post(`https://ria-api.okip.com.mx/api/v1/hikvision/events/plates/listener`, request.body, { headers: { 'Content-Type': 'application/json' } })
+    } catch (axiosError) {
+        console.dir(request.body, { depth: null, colors: true })
+        console.error('Error enviando evento al backend principal:', axiosError.message)
+    }
+
+    response.status(200).send({ status: 'ok', message: 'Event received' })
 })
 
 // NUEVOS EVENTOS
