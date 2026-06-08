@@ -23,8 +23,6 @@ app.use('/api', index_routes)
 // EVENTO DE PRUEBA PARA EVENTOS DE PLACAS
 app.post('/eventRcv', async (request, response) => {
     const events = request.body?.params?.events
-    console.log('\n[/eventRcv] BODY RECIVED:')
-    console.dir(request.body, { depth: null, colors: true })
 
     try {
         // COVIA Endpoint Placas
