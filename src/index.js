@@ -70,15 +70,6 @@ app.post('/new/events', (request, response) => {
         console.log('\nBODY:')
         console.dir(request.body, { depth: null, colors: true })
 
-        const events = request.body?.params?.events
-
-        if (events) {
-            console.log('\nEVENTS:')
-            console.dir(events, { depth: null, colors: true })
-        } else {
-            console.log('\nEVENTS: No events in params')
-        }
-
         console.log('==================================================\n\n')
     } catch (error) {
         console.error('Error procesando el log:', error.message)
