@@ -200,6 +200,26 @@ app.post('/event/198914', async (request, response) => {
     response.status(200).send({ status: 'ok', message: 'Event received' })
 })
 
+// HikCentral Detección de Movimiento
+app.post('/event/motion-detection/131331', async (request, response) => {
+    try {
+        await axios.post(
+            'https://api-covia.okip.com.mx/hikcentral/event/motion-detection',
+            request.body,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        )
+    } catch (axiosError) {
+        console.dir('evento 131331:', request.body, { depth: null, colors: true })
+        console.error('Error enviando evento al backend principal:', axiosError.message)
+    }
+
+    response.status(200).send({ status: 'ok', message: 'Event received' })
+})
+
 app.post('/camera-buttom', async (request, response) => {
     try {
         console.log('==================================================')
