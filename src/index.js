@@ -58,28 +58,37 @@ app.post('/eventRcv', async (request, response) => {
 })
 
 // NUEVOS EVENTOS
-app.post('/new/events', (request, response) => {
-    try {
-        console.log('==================================================')
-        console.log(`[${new Date().toISOString()}] Evento Recibido de Person:`)
-        console.log('==================================================')
+// app.post('/new/events', (request, response) => {
+//     try {
+//         console.log('==================================================')
+//         console.log(`[${new Date().toISOString()}] Evento Recibido de Person:`)
+//         console.log('==================================================')
 
-        console.log('HEADERS:')
-        console.dir(request.headers, { depth: null, colors: true })
+//         console.log('HEADERS:')
+//         console.dir(request.headers, { depth: null, colors: true })
 
-        console.log('\nBODY:')
-        console.dir(request.body, { depth: null, colors: true })
+//         console.log('\nBODY:')
+//         console.dir(request.body, { depth: null, colors: true })
 
-        console.log('==================================================\n\n')
-    } catch (error) {
-        console.error('Error procesando el log:', error.message)
-    }
-    response.status(200).send({ status: 'ok', message: 'Event received' });
-})
+//         console.log('==================================================\n\n')
+//     } catch (error) {
+//         console.error('Error procesando el log:', error.message)
+//     }
+//     response.status(200).send({ status: 'ok', message: 'Event received' });
+// })
 
 // TORNIQUETE
 app.post('/event/200518', async (request, response) => {
     const events = request.body?.params?.events[0]
+
+    console.log('==================================================')
+    console.log(`[${new Date().toISOString()}] Evento Recibido de Torniquete:`)
+    console.log('==================================================')
+
+    console.log('\nBODY:')
+    console.dir(request.body, { depth: null, colors: true })
+
+    console.log('==================================================\n\n')
 
     // Bitacora Endpoint Torniquetes
     try {
