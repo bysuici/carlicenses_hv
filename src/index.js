@@ -20,43 +20,6 @@ app.use(cors({
 
 app.use('/api', index_routes)
 
-// EVENTO DE PRUEBA PARA EVENTOS DE PLACAS
-app.post('/eventRcv', async (request, response) => {
-    const events = request.body?.params?.events
-
-    try {
-        // COVIA Endpoint Placas
-        await axios.post(`https://api-covia.okip.com.mx/plate-event`, request.body, { headers: { 'Content-Type': 'application/json' } })
-    } catch (axiosError) {
-        console.error('Error enviando evento al backend principal:', axiosError.message)
-    }
-
-    try {
-        // Bitacora Endpoint Placas
-        await axios.post(`https://api-bitacora.okip.com.mx/api/event/plates`, request.body, { headers: { 'Content-Type': 'application/json' } })
-    } catch (axiosError) {
-        console.error('Error enviando evento al backend principal:', axiosError.message)
-    }
-
-    try {
-        // Fan ID Endpoint Placas
-        await axios.post(
-            `https://api-ria.okip.com.mx/api/v1/hikvision/events/plates/listener`,
-            request.body,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-webhook-secret': '366977693916357e652b3cf0c4d40d7fde28208a211d52ebf9a08f39f7a0956d'
-                }
-            }
-        )
-    } catch (axiosError) {
-        console.error('Error enviando evento al backend principal:', axiosError.message)
-    }
-
-    response.status(200).send({ status: 'ok', message: 'Event received' })
-})
-
 // NUEVOS EVENTOS
 // app.post('/new/events', (request, response) => {
 //     try {
@@ -77,28 +40,95 @@ app.post('/eventRcv', async (request, response) => {
 //     response.status(200).send({ status: 'ok', message: 'Event received' });
 // })
 
+// EVENTOS DE PLACAS
+app.post('/eventRcv', async (request, response) => {
+    const events = request.body?.params?.events
+
+    // COVIA
+    try {
+        await axios.post(
+            `https://api-covia.okip.com.mx/plate-event`,
+            request.body,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        )
+    } catch (axiosError) {
+        console.error('Error enviando evento al backend principal:', axiosError.message)
+    }
+
+    // Bitacora
+    try {
+        await axios.post(
+            `https://api-bitacora.okip.com.mx/api/event/plates`,
+            request.body,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        )
+    } catch (axiosError) {
+        console.error('Error enviando evento al backend principal:', axiosError.message)
+    }
+
+    // RIA
+    try {
+        await axios.post(
+            `https://api-ria.okip.com.mx/api/v1/hikvision/events/plates/listener`,
+            request.body,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-webhook-secret': '366977693916357e652b3cf0c4d40d7fde28208a211d52ebf9a08f39f7a0956d'
+                }
+            }
+        )
+    } catch (axiosError) {
+        console.error('Error enviando evento al backend principal:', axiosError.message)
+    }
+
+    // RIA QA
+    try {
+        await axios.post(
+            `https://qa-api-ria.okip.com.mx/api/v1/hikvision/events/plates/listener`,
+            request.body,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-webhook-secret': '366977693916357e652b3cf0c4d40d7fde28208a211d52ebf9a08f39f7a0956d'
+                }
+            }
+        )
+    } catch (error) {
+        console.error('Error enviando evento al backend principal placas RIA QA:', error.message)
+    }
+
+    response.status(200).send({ status: 'ok', message: 'Event received' })
+})
+
 // TORNIQUETE
 app.post('/event/200518', async (request, response) => {
     const events = request.body?.params?.events[0]
 
-    console.log('==================================================')
-    console.log(`[${new Date().toISOString()}] Evento Recibido de Torniquete:`)
-    console.log('==================================================')
-
-    console.log('\nBODY:')
-    console.dir(request.body, { depth: null, colors: true })
-
-    console.log('==================================================\n\n')
-
-    // Bitacora Endpoint Torniquetes
+    // Bitacora
     try {
-        await axios.post(`https://api-bitacora.okip.com.mx/api/event/torniquete/200518`, events, { headers: { 'Content-Type': 'application/json' } })
+        await axios.post(
+            `https://api-bitacora.okip.com.mx/api/event/torniquete/200518`,
+            events,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        )
     } catch (axiosError) {
-        console.dir('evento 200518:', request.body, { depth: null, colors: true })
         console.error('Error enviando evento al backend principal torniquete:', axiosError.message)
     }
 
-    // Fan ID Endpoint Torniquetes
+    // RIA
     try {
         await axios.post(
             'https://api-ria.okip.com.mx/api/v1/hikvision/events/torniquete/listener',
@@ -108,7 +138,24 @@ app.post('/event/200518', async (request, response) => {
                     'Content-Type': 'application/json',
                     'x-webhook-secret': '366977693916357e652b3cf0c4d40d7fde28208a211d52ebf9a08f39f7a0956d'
                 }
-            })
+            }
+        )
+    } catch (error) {
+        console.error('Error enviando evento TORNIQUETE al backend FanID:', error.message)
+    }
+
+    // RIA QA
+    try {
+        await axios.post(
+            'https://qa-api-ria.okip.com.mx/api/v1/hikvision/events/torniquete/listener',
+            events,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-webhook-secret': '366977693916357e652b3cf0c4d40d7fde28208a211d52ebf9a08f39f7a0956d'
+                }
+            }
+        )
     } catch (error) {
         console.error('Error enviando evento TORNIQUETE al backend FanID:', error.message)
     }
@@ -120,18 +167,41 @@ app.post('/event/200518', async (request, response) => {
 app.post('/event/196893', async (request, response) => {
     const events = request.body?.params?.events[0]
 
-    // Bitacora Endpoint Biometrico
+    // Bitacora
     try {
-        await axios.post(`https://api-bitacora.okip.com.mx/api/event/torniquete/196893`, events, { headers: { 'Content-Type': 'application/json' } })
+        await axios.post(
+            `https://api-bitacora.okip.com.mx/api/event/torniquete/196893`,
+            events,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        )
     } catch (axiosError) {
-        console.dir('evento 196893:', request.body, { depth: null, colors: true })
         console.error('Error enviando evento al backend principal biometrico:', axiosError.message)
     }
 
-    // Fan ID Endpoint Biometrico
+    // RIA
     try {
         await axios.post(
             'https://api-ria.okip.com.mx/api/v1/hikvision/events/access/listener',
+            events,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-webhook-secret': '366977693916357e652b3cf0c4d40d7fde28208a211d52ebf9a08f39f7a0956d'
+                }
+            }
+        )
+    } catch (error) {
+        console.error('Error enviando evento BIOMETRICO al backend FanID:', error.message)
+    }
+
+    // RIA QA
+    try {
+        await axios.post(
+            'https://qa-api-ria.okip.com.mx/api/v1/hikvision/events/access/listener',
             events,
             {
                 headers: {
@@ -151,18 +221,41 @@ app.post('/event/196893', async (request, response) => {
 app.post('/event/197127', async (request, response) => {
     const events = request.body?.params?.events[0]
 
-    // Bitacora Endpoint Biometrico poe Huella
+    // Bitacora
     try {
-        await axios.post(`https://api-bitacora.okip.com.mx/api/event/doors/197127`, events, { headers: { 'Content-Type': 'application/json' } })
+        await axios.post(
+            `https://api-bitacora.okip.com.mx/api/event/doors/197127`,
+            events,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        )
     } catch (axiosError) {
-        console.dir('evento 197127:', request.body, { depth: null, colors: true })
         console.error('Error enviando evento al backend principal biometrico poe huella:', axiosError.message)
     }
 
-    // Fan ID Endpoint Biometrico
+    // RIA
     try {
         await axios.post(
             'https://api-ria.okip.com.mx/api/v1/hikvision/events/doors/listener',
+            events,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-webhook-secret': '366977693916357e652b3cf0c4d40d7fde28208a211d52ebf9a08f39f7a0956d'
+                }
+            }
+        )
+    } catch (error) {
+        console.error('Error enviando evento PUERTAS POR HUELLA al backend FanID:', error.message)
+    }
+
+    // RIA QA
+    try {
+        await axios.post(
+            'https://qa-api-ria.okip.com.mx/api/v1/hikvision/events/doors/listener',
             events,
             {
                 headers: {
@@ -182,18 +275,41 @@ app.post('/event/197127', async (request, response) => {
 app.post('/event/198914', async (request, response) => {
     const events = request.body?.params?.events[0]
 
-    // Bitacora Endpoint Puertas por Tarjeta
+    // Bitacora
     try {
-        await axios.post(`https://api-bitacora.okip.com.mx/api/event/doors/198914`, events, { headers: { 'Content-Type': 'application/json' } })
+        await axios.post(
+            `https://api-bitacora.okip.com.mx/api/event/doors/198914`,
+            events,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        )
     } catch (axiosError) {
-        console.dir('evento 198914:', request.body, { depth: null, colors: true })
         console.error('Error enviando evento al backend principal:', axiosError.message)
     }
 
-    // Fan ID Endpoint Puertas por Tarjeta
+    // RIA
     try {
         await axios.post(
             'https://api-ria.okip.com.mx/api/v1/hikvision/events/cards/listener',
+            events,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-webhook-secret': '366977693916357e652b3cf0c4d40d7fde28208a211d52ebf9a08f39f7a0956d'
+                }
+            }
+        )
+    } catch (error) {
+        console.error('Error enviando evento ABRIR PUERTAS CON TARJETA al backend FanID:', error.message)
+    }
+
+    // RIA QA
+    try {
+        await axios.post(
+            'https://qa-api-ria.okip.com.mx/api/v1/hikvision/events/cards/listener',
             events,
             {
                 headers: {
