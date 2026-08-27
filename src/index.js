@@ -43,7 +43,6 @@ app.use('/api', index_routes)
 // EVENTOS DE PLACAS
 app.post('/eventRcv', async (request, response) => {
     const events = request.body?.params?.events
-
     const allowedPlates = ['MXH438C', 'GM8751D', 'GM0357D', 'PEM8020']
     const hasAllowedPlate = events?.some(event => allowedPlates.includes(event?.data?.plateNo))
 
