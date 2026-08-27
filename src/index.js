@@ -44,6 +44,12 @@ app.use('/api', index_routes)
 app.post('/eventRcv', async (request, response) => {
     const events = request.body?.params?.events
 
+    const timeUtc6 = new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' })
+    console.log(`==================================================`)
+    console.log(`[${timeUtc6} (UTC-6)] Evento de Placas Recibido:`)
+    console.dir(events, { depth: null, colors: true })
+    console.log(`==================================================\n`)
+
     // COVIA
     try {
         await axios.post(
@@ -105,6 +111,11 @@ app.post('/eventRcv', async (request, response) => {
     } catch (error) {
         console.error('Error enviando evento al backend principal placas RIA QA:', error.message)
     }
+
+    const timeEndUtc6 = new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' })
+    console.log(`==================================================`)
+    console.log(`[${timeEndUtc6} (UTC-6)] Evento de Placas FINALIZADO (enviado a todos los endpoints)`)
+    console.log(`==================================================\n`)
 
     response.status(200).send({ status: 'ok', message: 'Event received' })
 })
