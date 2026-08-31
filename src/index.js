@@ -56,19 +56,19 @@ app.post('/eventRcv', async (request, response) => {
     }
 
     // COVIA
-    try {
-        await axios.post(
-            `https://api-covia.okip.com.mx/plate-event`,
-            request.body,
-            {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }
-        )
-    } catch (axiosError) {
-        console.error('Error enviando evento al backend principal:', axiosError.message)
-    }
+    // try {
+    //     await axios.post(
+    //         `https://api-covia.okip.com.mx/plate-event`,
+    //         request.body,
+    //         {
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             }
+    //         }
+    //     )
+    // } catch (axiosError) {
+    //     console.error('Error enviando evento al backend principal:', axiosError.message)
+    // }
 
     // Bitacora
     try {
